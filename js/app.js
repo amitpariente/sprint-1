@@ -80,10 +80,11 @@ function cellClicked(elCell, cellI, cellJ) {
         gLives--
         updateLives()
         elCell.classList='cell'
-        if (gLives === 0) {
+        if (gLives <= 0) {
             gameOver()
             return
         }
+        
     } else if (!cell.isShown) {
         cell.isShown = true
         elCell.classList = 'clicked'
