@@ -34,6 +34,8 @@ function getEmptyCells(board) {
         for (var j = 0; j < board[0].length; j++) {
             var cell = board[i][j]
             if (cell.isMine === false) {
+                if (gFirstClickedCell === cell) continue
+                if (cell.isShown === true) continue
                 embtyCells.push({ i, j })
             }
         }
@@ -51,6 +53,10 @@ function checkWin() {
             if (cell.isMine === false && cell.isMarked === true) return
 
         }
+    }
+    gGameOver = true
+    if (gBestScore > gSecPastFix) {
+        localStorage.setItem(`bestScore${gLevel.level}`, gSecPastFix);
     }
     winner()
 }
@@ -70,4 +76,15 @@ function setTimer(time) {
         }
     }
     return timer
+}
+
+function winFast() {
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            if (gBoard[i][j].isMine === true) {
+                renderCell(i, j, MINE)
+            }
+        }
+
+    }
 }

@@ -7,6 +7,7 @@ td {
 }
 
 body {
+    margin-top: 10%;
     background-image: url('../img/270e155a168eecdcbfaf902e3618eee6.jpg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -15,6 +16,10 @@ body {
 
 
 
+}
+
+.safe {
+    color: white;
 }
 
 .timer {
@@ -34,7 +39,6 @@ button {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 10%;
     font-family: inherit;
 
 }
@@ -69,6 +73,31 @@ button {
     left: 0px;
 }
 
+.b2 {
+    padding: 10px 20px 10px;
+}
+
+.safe {
+    width: 100%;
+    max-width: 140px;
+    height: 20px;
+    padding: 8px;
+    font-size: 0.8rem;
+    font-weight: 900;
+    background-color: #8e5b3f;
+    color: #000000;
+    display: inline;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 0 0 1px inset rgba(236, 232, 225, 0.3);
+    position: relative;
+    margin: 0;
+    font-family: "Muli";
+
+
+
+}
+
 table {
     margin-left: auto;
     margin-right: auto;
@@ -78,7 +107,8 @@ table {
     background-color: #f3900e;
 
 }
-.cell{
+
+.cell {
     background-color: red;
 }
 

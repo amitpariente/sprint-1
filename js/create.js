@@ -7,6 +7,7 @@ function createFlag(elCell, i, j, ev) {
     if (!isflag) {
         elCell.innerHTML = RED_FLAG
         gBoard[i][j].isMarked = true
+        checkWin()
 
 
     } else if (isflag) {

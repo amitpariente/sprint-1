@@ -8,14 +8,27 @@ var gLives = 3
 var gStartTime
 var gIntervalId
 var gLevel = {
+    level: 'easy' ,
     SIZE: 4,
     MINES: 2
 }
 var gIsFirstClick 
+var gFirstClickedCell
+var gGameOver 
+const SAFE_CLICK='🧐'
+var gSafeClickCount
+var gSecPastFix
+var gElSafebutn
+var gBestScore
+
 
 
 function init() {
+    gSafeClickCount=0
+    var elCounter = document.querySelector('.safe')
+    elCounter.innerHTML = `${(3-gSafeClickCount)} clicks available`
     gIsFirstClick=false
+    gGameOver=false
     var elButn = document.querySelector('.fill')
     elButn.innerText = '😃'
     gLives=3
@@ -23,6 +36,14 @@ function init() {
     renderBoard(gBoard)
     console.table(gBoard);
     updateLives()
+    if(gElSafebutn !=null){
+        gElSafebutn.disabled=false
+    }
+    gBestScore = localStorage.getItem(`bestScore${gLevel.level}`)
+   var elScore = document.querySelector('.best-time span')
+   elScore.innerHTML=gBestScore
+
+    
    
    
 
@@ -55,7 +76,6 @@ function setMinesNegsCount(cellI, cellJ, board) {
     return minesAroundCount
 }
 
-
 // CELL
 // { minesAroundCount: setMinesNegsCount(i,j,board),
 //      isShown: true,
@@ -63,8 +83,10 @@ function setMinesNegsCount(cellI, cellJ, board) {
 //       isMarked: true }
 
 function cellClicked(elCell, cellI, cellJ) {
+    if(gGameOver===true)return
     console.log(elCell);
     if (!gIsFirstClick){
+        gFirstClickedCell = gBoard[cellI][cellJ]
         startTimer()
         gIsFirstClick=true
         createMines(gBoard)
@@ -82,6 +104,8 @@ function cellClicked(elCell, cellI, cellJ) {
         elCell.classList='cell'
         if (gLives <= 0) {
             gameOver()
+            gGameOver= true
+
             return
         }
         
@@ -127,6 +151,7 @@ function winner() {
 }
 
 function easy() {
+    gLevel.level= 'easy'
     gLevel.SIZE = 4
     gLevel.MINES = 2
     clearInterval(gIntervalId)
@@ -139,6 +164,7 @@ function medium() {
     clearInterval(gIntervalId)
     var elTimer = document.querySelector('.timer')
     elTimer.innerText=''
+    gLevel.level= 'medium'
     gLevel.SIZE = 8
     gLevel.MINES = 12
     init()
@@ -147,6 +173,7 @@ function medium() {
 function hard() {
     var elTimer = document.querySelector('.timer')
     elTimer.innerText=''
+    gLevel.level= 'hard'
     gLevel.SIZE = 12
     gLevel.MINES = 30
     init()
@@ -161,10 +188,10 @@ function updateTime() {
     var now = Date.now()
     var diff = now - gStartTime
     var secPast = diff / 1000
-    var secPastFix = setTimer(secPast)
+     gSecPastFix = setTimer(secPast)
     var elTimer = document.querySelector('.timer')
     console.log(elTimer)
-    elTimer.innerText = secPastFix
+    elTimer.innerText = gSecPastFix
 
 
 }
@@ -192,4 +219,28 @@ function findAllNeighbors(cellI, cellJ, board) {
         }
     }
     return neighbors
+}
+
+function safeClick(){
+    var emptyCells = getEmptyCells(gBoard)
+    var cellIndex = getRandomInt(0,emptyCells.length)
+    var cell = emptyCells[cellIndex]
+    renderCell(cell.i,cell.j,SAFE_CLICK)
+    gSafeClickCount ++
+    setTimeout(function(){
+        renderCell(cell.i,cell.j,'')
+    },1000)
+}
+
+
+function startSafeClick(elButn){
+    gElSafebutn = elButn
+    if (gSafeClickCount!=3) {
+        safeClick()
+        var elCounter = document.querySelector('.safe')
+        elCounter.innerHTML = `${(3-gSafeClickCount)} clicks available`
+    }else{
+        elButn.disabled= true
+    }
+    
 }
